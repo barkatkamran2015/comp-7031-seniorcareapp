@@ -17,7 +17,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Avatar.Icon size={80} icon="account" style={styles.avatar} />
+      <Avatar.Image 
+        size={80} 
+        source={require('../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png')} 
+        style={styles.avatar} 
+      />
       <Text style={styles.title}>Welcome Back!</Text>
       <TextInput
         label="Username"
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignSelf: 'center',
-    backgroundColor: '#6200ee',
+    backgroundColor: '#fff',
     marginBottom: 20,
   },
   title: {
