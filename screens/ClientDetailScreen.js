@@ -70,9 +70,7 @@ const ClientDetailScreen = ({route, navigation}) => {
 
   const fetchClientById = async id => {
     try {
-      const response = await axios.get(
-        `http://192.168.20.31:3000/clients/${id}`,
-      );
+      const response = await axios.get(`http://localhost:3000/clients/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error fetching client with ID ${id}`, error);

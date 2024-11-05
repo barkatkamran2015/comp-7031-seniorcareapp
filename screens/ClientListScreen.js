@@ -24,7 +24,7 @@ const ClientListScreen = ({navigation}) => {
     useCallback(() => {
       const fetchClients = async () => {
         try {
-          const response = await axios.get('http://192.168.20.31:3000/clients');
+          const response = await axios.get('http://localhost:3000/clients');
           const clientsFromAPI = response.data;
           console.log(clientsFromAPI);
           const updatedClients = await Promise.all(
