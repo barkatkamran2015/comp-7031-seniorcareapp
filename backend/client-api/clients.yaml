@@ -1,0 +1,28 @@
+#This document uses SPACES, not tabs
+#IT WILL BREAK OTHERWISE
+
+- id: 1
+  photo: "/photos/photo1.jpeg"
+  firstName: "John"
+  lastName: "Doe"
+  address: "123 Main St"
+  dateEntered: "2023-05-15"
+  rating: 4
+  dataConsent: true
+  properties:
+    - smart
+    - funny
+
+
+
+- id: 2
+  photo: "/photos/photo2.jpeg"
+  firstName: "Jane"
+  lastName: "Smith"
+  address: "456 Oak Ave"
+  dateEntered: "2023-06-20"
+  rating: 5
+  dataConsent: false
+  properties: 
+    - interesting
+    - aloof
