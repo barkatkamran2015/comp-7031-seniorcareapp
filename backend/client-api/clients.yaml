@@ -1,28 +1,82 @@
 #This document uses SPACES, not tabs
 #IT WILL BREAK OTHERWISE
 
-- id: 1
-  photo: "/photos/photo1.jpeg"
-  firstName: "John"
-  lastName: "Doe"
-  address: "123 Main St"
-  dateEntered: "2023-05-15"
-  rating: 4
-  dataConsent: true
-  properties:
-    - smart
-    - funny
+- id: '1'
+  firstName: 'Odell'
+  lastName: 'Hawk'
+  unitNumber: '101'
+  buildingName: 'Sunset Apartments'
+  photoUrl: '/photos/photo1.jpeg'
+  status: 'Active'
 
+- id: '2'
+  firstName: 'Amara'
+  lastName: 'Cline'
+  unitNumber: '102'
+  buildingName: 'Ocean View'
+  photoUrl: '/photos/photo2.jpeg'
+  status: 'Inactive'
 
+- id: '3'
+  firstName: 'Beatrix'
+  lastName: 'Goddard'
+  unitNumber: '201'
+  buildingName: 'Mountain Ridge'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Active'
 
-- id: 2
-  photo: "/photos/photo2.jpeg"
-  firstName: "Jane"
-  lastName: "Smith"
-  address: "456 Oak Ave"
-  dateEntered: "2023-06-20"
-  rating: 5
-  dataConsent: false
-  properties: 
-    - interesting
-    - aloof
+- id: '4'
+  firstName: 'Corbin'
+  lastName: 'Trent'
+  unitNumber: '301'
+  buildingName: 'Green Hills'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Completed'
+
+- id: '5'
+  firstName: 'Dalia'
+  lastName: 'Morales'
+  unitNumber: '302'
+  buildingName: 'Lakeside Towers'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Partial'
+
+- id: '6'
+  firstName: 'Ezra'
+  lastName: 'Klein'
+  unitNumber: '401'
+  buildingName: 'Sunrise Estate'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Refused'
+
+- id: '7'
+  firstName: 'Fleur'
+  lastName: 'Thorne'
+  unitNumber: '402'
+  buildingName: 'Maple Gardens'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Active'
+
+- id: '8'
+  firstName: 'Gideon'
+  lastName: 'Brooks'
+  unitNumber: '501'
+  buildingName: 'Riverside Complex'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Inactive'
+
+- id: '9'
+  firstName: 'Harlow'
+  lastName: 'Winslow'
+  unitNumber: '601'
+  buildingName: 'Blue Horizon'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Completed'
+
+- id: '10'
+  firstName: 'Isolde'
+  lastName: 'Crawford'
+  unitNumber: '701'
+  buildingName: 'Hilltop Heights'
+  photoUrl: 'https://via.placeholder.com/100'
+  status: 'Partial'

@@ -13,10 +13,13 @@ app.use('/photos', express.static(path.join(__dirname, 'photos')));
 // Load clients from YAML file
 function loadClients() {
   try {
-    const fileContents = fs.readFileSync(path.join(__dirname, 'clients.yaml'), 'utf8');
+    const fileContents = fs.readFileSync(
+      path.join(__dirname, 'clients.yaml'),
+      'utf8',
+    );
     return yaml.load(fileContents);
   } catch (error) {
-    console.error("Error loading clients.yaml:", error);
+    console.error('Error loading clients.yaml:', error);
     return [];
   }
 }
@@ -25,23 +28,35 @@ const clients = loadClients();
 
 // 1. Get a list of all clients (first set of fields only)
 app.get('/clients', (req, res) => {
-  const clientList = clients.map(({ id, photo, firstName, lastName, address }) => ({
-    id,
-    photo,
-    firstName,
-    lastName,
-    address
-  }));
+  const clientList = clients.map(
+    ({
+      id,
+      firstName,
+      lastName,
+      unitNumber,
+      buildingName,
+      photoUrl,
+      status,
+    }) => ({
+      id,
+      firstName,
+      lastName,
+      unitNumber,
+      buildingName,
+      photoUrl,
+      status,
+    }),
+  );
   res.json(clientList);
 });
 
 // 2. Get full details of a single client by ID
 app.get('/clients/:id', (req, res) => {
-  const clientId = parseInt(req.params.id);
+  const clientId = req.params.id;
   const client = clients.find(client => client.id === clientId);
 
   if (!client) {
-    return res.status(404).json({ message: "Client not found" });
+    return res.status(404).json({message: 'Client not found'});
   }
 
   res.json(client);
