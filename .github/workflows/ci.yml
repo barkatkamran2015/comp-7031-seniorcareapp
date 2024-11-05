@@ -26,3 +26,57 @@ jobs:
         
       - name: Run linter
         run: npm run lint
+
+  android-build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build Android Release
+        run: |
+          cd android
+          ./gradlew assembleRelease
+
+      - name: Upload Android Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-release
+          path: android/app/build/outputs/apk/release/app-release.apk
+
+  ios-build:
+    needs: test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          npm install
+          cd ios && pod install && cd ..
+          
+      - name: Build iOS Release
+        run: |
+          cd ios
+          xcodebuild -workspace seniorcareapp.xcworkspace -scheme seniorcareapp -configuration Release -sdk iphonesimulator
