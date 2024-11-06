@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const ClientListScreen = ({navigation}) => {
   const [clients, setClients] = useState([]);
+  const [displayedClients, setDisplayedClients] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
@@ -47,6 +48,7 @@ const ClientListScreen = ({navigation}) => {
             }),
           );
           setClients(updatedClients);
+          setDisplayedClients(updatedClients);
         } catch (error) {
           console.error('Error fetching clients:', error);
         }
@@ -75,21 +77,27 @@ const ClientListScreen = ({navigation}) => {
 
   const handleSearch = text => {
     setSearchText(text);
-    const filteredClients = mockClients.filter(
+    if(text == ""){
+      setDisplayedClients(clients);
+    }
+    const filteredClients = clients.filter(
       client =>
         client.firstName.toLowerCase().includes(text.toLowerCase()) ||
         client.lastName.toLowerCase().includes(text.toLowerCase()) ||
         client.buildingName.toLowerCase().includes(text.toLowerCase()) ||
         client.unitNumber.includes(text),
     );
-    setClients(filteredClients);
+    setDisplayedClients(filteredClients);
+
   };
 
   const sortClients = criteria => {
-    const sortedClients = [...clients].sort((a, b) =>
+    handleSearch(searchText);
+    const sortedClients = [...displayedClients].sort((a, b) =>
       a[criteria].localeCompare(b[criteria]),
     );
-    setClients(sortedClients);
+    setDisplayedClients(sortedClients);
+    
   };
 
   const handleImageUpload = async clientId => {
@@ -141,7 +149,7 @@ const ClientListScreen = ({navigation}) => {
         </Menu>
 
         <FlatList
-          data={clients}
+          data={displayedClients}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity
