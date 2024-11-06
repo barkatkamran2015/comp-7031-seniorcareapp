@@ -62,6 +62,9 @@ npm install react-native-image-picker
 # Stack Navigator for managing screen stack
 npm install @react-navigation/stack
 
+# Axios for making HTTP requests
+npm install axios
+
 # Native dependencies for React Navigation
 npm install react-native-screens react-native-safe-area-context
 
