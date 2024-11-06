@@ -1,138 +1,65 @@
-import React, { useState, useCallback, useLayoutEffect } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
-import { Button, Menu, Provider } from 'react-native-paper';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useState, useCallback, useLayoutEffect} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Alert,
+  Platform,
+} from 'react-native';
+import {Button, Menu, Provider} from 'react-native-paper';
+import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
-const mockClients = [
-  {
-    id: '1',
-    firstName: 'Odell',
-    lastName: 'Hawk',
-    unitNumber: '101',
-    buildingName: 'Sunset Apartments',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Active',
-  },
-  {
-    id: '2',
-    firstName: 'Amara',
-    lastName: 'Cline',
-    unitNumber: '102',
-    buildingName: 'Ocean View',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Inactive',
-  },
-  {
-    id: '3',
-    firstName: 'Beatrix',
-    lastName: 'Goddard',
-    unitNumber: '201',
-    buildingName: 'Mountain Ridge',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Active',
-  },
-  {
-    id: '4',
-    firstName: 'Corbin',
-    lastName: 'Trent',
-    unitNumber: '301',
-    buildingName: 'Green Hills',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Completed',
-  },
-  {
-    id: '5',
-    firstName: 'Dalia',
-    lastName: 'Morales',
-    unitNumber: '302',
-    buildingName: 'Lakeside Towers',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Partial',
-  },
-  {
-    id: '6',
-    firstName: 'Ezra',
-    lastName: 'Klein',
-    unitNumber: '401',
-    buildingName: 'Sunrise Estate',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Refused',
-  },
-  {
-    id: '7',
-    firstName: 'Fleur',
-    lastName: 'Thorne',
-    unitNumber: '402',
-    buildingName: 'Maple Gardens',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Active',
-  },
-  {
-    id: '8',
-    firstName: 'Gideon',
-    lastName: 'Brooks',
-    unitNumber: '501',
-    buildingName: 'Riverside Complex',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Inactive',
-  },
-  {
-    id: '9',
-    firstName: 'Harlow',
-    lastName: 'Winslow',
-    unitNumber: '601',
-    buildingName: 'Blue Horizon',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Completed',
-  },
-  {
-    id: '10',
-    firstName: 'Isolde',
-    lastName: 'Crawford',
-    unitNumber: '701',
-    buildingName: 'Hilltop Heights',
-    photoUrl: 'https://via.placeholder.com/100',
-    status: 'Partial',
-  },
-];
-
-const ClientListScreen = ({ navigation }) => {
-  const [clients, setClients] = useState(mockClients);
+const ClientListScreen = ({navigation}) => {
+  const [clients, setClients] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const BASE_URL =
+    Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+
   useFocusEffect(
     useCallback(() => {
-      const loadStatuses = async () => {
-        const updatedClients = await Promise.all(
-          clients.map(async (client) => {
-            const savedStatus = await AsyncStorage.getItem(`status-${client.id}`);
-            const savedPhoto = await AsyncStorage.getItem(`photoUrl-${client.id}`);
-            return {
-              ...client,
-              status: savedStatus || client.status,
-              photoUrl: savedPhoto || client.photoUrl,
-            };
-          })
-        );
-        setClients(updatedClients);
+      const fetchClients = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/clients`);
+          const clientsFromAPI = response.data;
+          console.log(clientsFromAPI);
+          const updatedClients = await Promise.all(
+            clientsFromAPI.map(async client => {
+              const savedStatus = await AsyncStorage.getItem(
+                `status-${client.id}`,
+              );
+              const savedPhoto = await AsyncStorage.getItem(
+                `photoUrl-${client.id}`,
+              );
+              return {
+                ...client,
+                status: savedStatus || client.status,
+                photoUrl: savedPhoto || client.photoUrl,
+              };
+            }),
+          );
+          setClients(updatedClients);
+        } catch (error) {
+          console.error('Error fetching clients:', error);
+        }
       };
-
-      loadStatuses();
-    }, [clients])
+      fetchClients();
+    }, []),
   );
 
   const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Logout", onPress: () => navigation.navigate("Login") }
-      ]
-    );
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Logout', onPress: () => navigation.navigate('Login')},
+    ]);
   };
 
   useLayoutEffect(() => {
@@ -146,35 +73,38 @@ const ClientListScreen = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const handleSearch = (text) => {
+  const handleSearch = text => {
     setSearchText(text);
-    const filteredClients = mockClients.filter(client =>
-      client.firstName.toLowerCase().includes(text.toLowerCase()) ||
-      client.lastName.toLowerCase().includes(text.toLowerCase()) ||
-      client.buildingName.toLowerCase().includes(text.toLowerCase()) ||
-      client.unitNumber.includes(text)
+    const filteredClients = mockClients.filter(
+      client =>
+        client.firstName.toLowerCase().includes(text.toLowerCase()) ||
+        client.lastName.toLowerCase().includes(text.toLowerCase()) ||
+        client.buildingName.toLowerCase().includes(text.toLowerCase()) ||
+        client.unitNumber.includes(text),
     );
     setClients(filteredClients);
   };
 
-  const sortClients = (criteria) => {
-    const sortedClients = [...clients].sort((a, b) => a[criteria].localeCompare(b[criteria]));
+  const sortClients = criteria => {
+    const sortedClients = [...clients].sort((a, b) =>
+      a[criteria].localeCompare(b[criteria]),
+    );
     setClients(sortedClients);
   };
 
-  const handleImageUpload = async (clientId) => {
+  const handleImageUpload = async clientId => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
       maxWidth: 100,
       maxHeight: 100,
     });
-    
+
     if (result.assets && result.assets.length > 0) {
       const photoUrl = result.assets[0].uri;
-      setClients(prevClients => 
-        prevClients.map(client => 
-          client.id === clientId ? { ...client, photoUrl } : client
-        )
+      setClients(prevClients =>
+        prevClients.map(client =>
+          client.id === clientId ? {...client, photoUrl} : client,
+        ),
       );
       await AsyncStorage.setItem(`photoUrl-${clientId}`, photoUrl);
     }
@@ -193,33 +123,53 @@ const ClientListScreen = ({ navigation }) => {
         <Menu
           visible={isMenuVisible}
           onDismiss={() => setIsMenuVisible(false)}
-          anchor={<Button onPress={() => setIsMenuVisible(true)}>Choose Sort</Button>}
-        >
-          <Menu.Item onPress={() => sortClients('firstName')} title="First Name" />
-          <Menu.Item onPress={() => sortClients('lastName')} title="Last Name" />
-          <Menu.Item onPress={() => sortClients('unitNumber')} title="Unit Number" />
+          anchor={
+            <Button onPress={() => setIsMenuVisible(true)}>Choose Sort</Button>
+          }>
+          <Menu.Item
+            onPress={() => sortClients('firstName')}
+            title="First Name"
+          />
+          <Menu.Item
+            onPress={() => sortClients('lastName')}
+            title="Last Name"
+          />
+          <Menu.Item
+            onPress={() => sortClients('unitNumber')}
+            title="Unit Number"
+          />
         </Menu>
 
         <FlatList
           data={clients}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('ClientDetail', { client: item })}
-              style={styles.clientItem}
-            >
+              onPress={() =>
+                navigation.navigate('ClientDetail', {client: item})
+              }
+              style={styles.clientItem}>
               <TouchableOpacity onPress={() => handleImageUpload(item.id)}>
-                <Image source={{ uri: item.photoUrl }} style={styles.clientPhoto} />
+                <Image
+                  source={{uri: item.photoUrl}}
+                  style={styles.clientPhoto}
+                />
               </TouchableOpacity>
               <View style={styles.clientInfo}>
-                <Text style={styles.clientName}>{item.firstName} {item.lastName}</Text>
-                <Text>{item.unitNumber}, {item.buildingName}</Text>
+                <Text style={styles.clientName}>
+                  {item.firstName} {item.lastName}
+                </Text>
+                <Text>
+                  {item.unitNumber}, {item.buildingName}
+                </Text>
                 <Button
                   mode="contained"
                   compact
-                  style={[styles.statusButton, styles[`statusButton${item.status}`]]}
-                  labelStyle={styles.statusButtonText}
-                >
+                  style={[
+                    styles.statusButton,
+                    styles[`statusButton${item.status}`],
+                  ]}
+                  labelStyle={styles.statusButtonText}>
                   {item.status}
                 </Button>
               </View>
@@ -232,7 +182,7 @@ const ClientListScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
+  container: {flex: 1, padding: 16},
   searchInput: {
     marginBottom: 12,
     paddingHorizontal: 12,
@@ -265,21 +215,21 @@ const styles = StyleSheet.create({
     marginTop: 8,
     borderRadius: 8,
     paddingVertical: 4,
-    paddingHorizontal: 8,  // Adjusts button width to be more compact
+    paddingHorizontal: 8, // Adjusts button width to be more compact
   },
   statusButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 12,  // Reduces font size for a more compact look
+    fontSize: 12, // Reduces font size for a more compact look
   },
   logoutButton: {
     marginRight: 16,
   },
-  statusButtonActive: { backgroundColor: '#4caf50' },
-  statusButtonInactive: { backgroundColor: '#9e9e9e' },
-  statusButtonCompleted: { backgroundColor: '#2196f3' },
-  statusButtonPartial: { backgroundColor: '#ff9800' },
-  statusButtonRefused: { backgroundColor: '#f44336' },
+  statusButtonActive: {backgroundColor: '#4caf50'},
+  statusButtonInactive: {backgroundColor: '#9e9e9e'},
+  statusButtonCompleted: {backgroundColor: '#2196f3'},
+  statusButtonPartial: {backgroundColor: '#ff9800'},
+  statusButtonRefused: {backgroundColor: '#f44336'},
 });
 
 export default ClientListScreen;
