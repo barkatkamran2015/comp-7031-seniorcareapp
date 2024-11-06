@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
@@ -17,6 +18,8 @@ const ClientDetailScreen = ({route, navigation}) => {
   const {client} = route.params;
   const [status, setStatus] = useState(client.status);
   const [photoUrl, setPhotoUrl] = useState(client.photoUrl);
+  const BASE_URL =
+    Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
 
   // Load the saved status and photo from AsyncStorage when the component mounts
   useEffect(() => {
@@ -70,7 +73,7 @@ const ClientDetailScreen = ({route, navigation}) => {
 
   const fetchClientById = async id => {
     try {
-      const response = await axios.get(`http://localhost:3000/clients/${id}`);
+      const response = await axios.get(`${BASE_URL}/clients/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error fetching client with ID ${id}`, error);

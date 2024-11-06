@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   Alert,
+  Platform,
 } from 'react-native';
 import {Button, Menu, Provider} from 'react-native-paper';
 import {useFocusEffect} from '@react-navigation/native';
@@ -20,11 +21,14 @@ const ClientListScreen = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const BASE_URL =
+    Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+
   useFocusEffect(
     useCallback(() => {
       const fetchClients = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/clients');
+          const response = await axios.get(`${BASE_URL}/clients`);
           const clientsFromAPI = response.data;
           console.log(clientsFromAPI);
           const updatedClients = await Promise.all(
