@@ -1,6 +1,6 @@
 export default {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
+    getItem: jest.fn(() => Promise.resolve(null)),
+    setItem: jest.fn(() => Promise.resolve()),
     removeItem: jest.fn(),
     clear: jest.fn(),
   };
