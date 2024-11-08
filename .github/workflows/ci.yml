@@ -26,7 +26,7 @@ jobs:
 
       - name: Upload Coverage Report
         if: success() # Only upload if tests pass
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: coverage/
