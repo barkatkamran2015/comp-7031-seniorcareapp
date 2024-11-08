@@ -122,6 +122,7 @@ const ClientListScreen = ({navigation}) => {
     <Provider>
       <View style={styles.container}>
         <TextInput
+          testID="search-input"
           placeholder="Search by name or address..."
           style={styles.searchInput}
           value={searchText}
@@ -164,7 +165,7 @@ const ClientListScreen = ({navigation}) => {
                 />
               </TouchableOpacity>
               <View style={styles.clientInfo}>
-                <Text style={styles.clientName}>
+                <Text testID="client-name" style={styles.clientName}>
                   {item.firstName} {item.lastName}
                 </Text>
                 <Text>

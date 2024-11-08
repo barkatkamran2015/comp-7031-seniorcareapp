@@ -20,6 +20,16 @@ jobs:
           
       - name: Install dependencies
         run: npm install
+      
+      - name: Run Jest Tests
+        run: npm test
+
+      - name: Upload Coverage Report
+        if: success() # Only upload if tests pass
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage/
         
 
   android-build:

@@ -111,9 +111,10 @@ const ClientDetailScreen = ({route, navigation}) => {
   return (
     <GestureRecognizer
       onSwipeLeft={handleSwipeLeft}
-      onSwipeRight={handleSwipeRight}>
+      onSwipeRight={handleSwipeRight}
+      testID="gesture-handler">
       <ScrollView contentContainerStyle={styles.container}>
-        <TouchableOpacity onPress={handleImageUpload}>
+        <TouchableOpacity onPress={handleImageUpload} testID="upload-image-button">
           <Image source={{uri: photoUrl}} style={styles.clientPhotoLarge} />
         </TouchableOpacity>
         <Text style={styles.clientName}>
@@ -142,7 +143,9 @@ const ClientDetailScreen = ({route, navigation}) => {
               status === 'Completed'
                 ? styles.selectedButton
                 : styles.statusButton
-            }>
+            }
+            testID="status-button-completed"
+            >
             Completed
           </Button>
           <Button
