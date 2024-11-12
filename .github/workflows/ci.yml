@@ -24,6 +24,9 @@ jobs:
       - name: Run Jest Tests
         run: npm test
 
+      - name: Run ESLint
+        run: npm run lint
+
       - name: Upload Coverage Report
         if: success() # Only upload if tests pass
         uses: actions/upload-artifact@v3

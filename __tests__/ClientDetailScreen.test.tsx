@@ -2,7 +2,6 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import ClientDetailScreen from '../screens/ClientDetailScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -51,7 +50,7 @@ describe('ClientDetailScreen', () => {
       return Promise.resolve(null);
     });
 
-    const { getByText, getByTestId } = renderComponent();
+    const { getByText } = renderComponent();
 
     await waitFor(() => {
       expect(getByText('Odell Hawk')).toBeTruthy();

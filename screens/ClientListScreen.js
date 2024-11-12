@@ -54,7 +54,7 @@ const ClientListScreen = ({navigation}) => {
         }
       };
       fetchClients();
-    }, []),
+    }, [BASE_URL]),
   );
 
   const handleLogout = () => {
@@ -73,7 +73,7 @@ const ClientListScreen = ({navigation}) => {
         </Button>
       ),
     });
-  }, [navigation]);
+  }, );
 
   const handleSearch = text => {
     setSearchText(text);
@@ -97,7 +97,7 @@ const ClientListScreen = ({navigation}) => {
       a[criteria].localeCompare(b[criteria]),
     );
     setDisplayedClients(sortedClients);
-    
+
   };
 
   const handleImageUpload = async clientId => {

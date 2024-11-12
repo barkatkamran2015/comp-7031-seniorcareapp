@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text, useTheme, Avatar } from 'react-native-paper';
+import { TextInput, Button, Text, Avatar } from 'react-native-paper';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const theme = useTheme();
 
   const handleLogin = () => {
     if (username === 'admin' && password === 'password') {
@@ -17,10 +16,10 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Avatar.Image 
-        size={80} 
-        source={require('../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png')} 
-        style={styles.avatar} 
+      <Avatar.Image
+        size={80}
+        source={require('../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png')}
+        style={styles.avatar}
       />
       <Text style={styles.title}>Welcome Back!</Text>
       <TextInput
@@ -53,11 +52,11 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    justifyContent: 'center', 
-    padding: 20, 
-    backgroundColor: '#f6f6f6' 
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f6f6f6',
   },
   avatar: {
     alignSelf: 'center',
