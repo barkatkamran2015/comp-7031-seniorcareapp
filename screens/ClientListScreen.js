@@ -68,16 +68,20 @@ const ClientListScreen = ({navigation}) => {
     navigation.setOptions({
       headerLeft: () => null,
       headerRight: () => (
-        <Button onPress={handleLogout} mode="text" style={styles.logoutButton}>
+        <Button
+          onPress={handleLogout}
+          testID="logoutButton"
+          mode="text"
+          style={styles.logoutButton}>
           Logout
         </Button>
       ),
     });
-  }, );
+  });
 
   const handleSearch = text => {
     setSearchText(text);
-    if(text == ""){
+    if (text == '') {
       setDisplayedClients(clients);
     }
     const filteredClients = clients.filter(
@@ -88,7 +92,6 @@ const ClientListScreen = ({navigation}) => {
         client.unitNumber.includes(text),
     );
     setDisplayedClients(filteredClients);
-
   };
 
   const sortClients = criteria => {
@@ -97,7 +100,6 @@ const ClientListScreen = ({navigation}) => {
       a[criteria].localeCompare(b[criteria]),
     );
     setDisplayedClients(sortedClients);
-
   };
 
   const handleImageUpload = async clientId => {
@@ -120,7 +122,7 @@ const ClientListScreen = ({navigation}) => {
 
   return (
     <Provider>
-      <View style={styles.container}>
+      <View style={styles.container} testID="clientListScreen">
         <TextInput
           testID="search-input"
           placeholder="Search by name or address..."
@@ -128,7 +130,9 @@ const ClientListScreen = ({navigation}) => {
           value={searchText}
           onChangeText={handleSearch}
         />
-        <Button onPress={() => setIsMenuVisible(true)}>Sort By</Button>
+        <Button testID="sortButton" onPress={() => setIsMenuVisible(true)}>
+          Sort By
+        </Button>
         <Menu
           visible={isMenuVisible}
           onDismiss={() => setIsMenuVisible(false)}
@@ -138,6 +142,7 @@ const ClientListScreen = ({navigation}) => {
           <Menu.Item
             onPress={() => sortClients('firstName')}
             title="First Name"
+            testID="firstNameOption"
           />
           <Menu.Item
             onPress={() => sortClients('lastName')}
@@ -150,6 +155,7 @@ const ClientListScreen = ({navigation}) => {
         </Menu>
 
         <FlatList
+          testID="clientList"
           data={displayedClients}
           keyExtractor={item => item.id}
           renderItem={({item}) => (

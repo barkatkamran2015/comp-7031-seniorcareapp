@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text, Avatar } from 'react-native-paper';
+import React, {useState} from 'react';
+import {View, StyleSheet, Alert} from 'react-native';
+import {TextInput, Button, Text, Avatar} from 'react-native-paper';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,7 +15,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="loginScreen">
       <Avatar.Image
         size={80}
         source={require('../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png')}
@@ -23,6 +23,7 @@ const LoginScreen = ({ navigation }) => {
       />
       <Text style={styles.title}>Welcome Back!</Text>
       <TextInput
+        testID="usernameInput"
         label="Username"
         value={username}
         onChangeText={setUsername}
@@ -31,6 +32,7 @@ const LoginScreen = ({ navigation }) => {
         left={<TextInput.Icon name="account" />}
       />
       <TextInput
+        testID="passwordInput"
         label="Password"
         value={password}
         onChangeText={setPassword}
@@ -40,11 +42,11 @@ const LoginScreen = ({ navigation }) => {
         left={<TextInput.Icon name="lock" />}
       />
       <Button
+        testID="loginButton"
         mode="contained"
         onPress={handleLogin}
         style={styles.button}
-        contentStyle={styles.buttonContent}
-      >
+        contentStyle={styles.buttonContent}>
         Login
       </Button>
     </View>
