@@ -95,6 +95,22 @@ Now that you have successfully run the app, let's modify it.
 
    For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
 
+## Detox UI Testing
+
+1.	First, install the Detox CLI globally:
+   npm install -g detox-cli
+2. Then, install the Detox package in your project:
+   npm install detox --save-dev
+3.	Install the necessary CocoaPods dependencies for iOS:
+   cd ios
+   pod install
+   cd ..
+
+4.	To build the app for testing, run:
+   detox build --configuration ios.sim.debug
+5.	Once the build is complete, you can run the Detox tests:
+   detox test --configuration ios.sim.debug
+
 ## View Test Coverage Report
 npx jest --coverage
 
